@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { TOKEN_STORAGE_NAME } from '../constants';
+import Loading from './Loading';
 
 const TodoList = props => {
-  const { getTodoList, todoList, deleteTodo, setErrorMessage, errorMessage, history, setTodoFormTitle, setTodoFormButtonName, setSelectedTodo } = props;
+  const { getTodoList, todoList, deleteTodo, setErrorMessage, errorMessage, history, setTodoFormTitle, setTodoFormButtonName, setSelectedTodo, updateTodo, loading } = props;
   useEffect(() => {
     getTodoList();
   }, [getTodoList]);
@@ -14,6 +15,11 @@ const TodoList = props => {
       history.push('/signin');
     }
     setErrorMessage('');
+  }
+
+  const handleCheck = todo => {
+    todo.completed = !todo.completed
+    updateTodo(todo._id, todo);
   }
 
   const handleUpdate = todo => {
@@ -34,7 +40,10 @@ const TodoList = props => {
         todoList.map(todo => (
           <div key={todo._id} className="card my-2">
             <div className="card-body d-flex justify-content-between align-items-center">
-              <div>{todo.title}</div>
+              <div className="d-flex">
+                <div><input type="checkbox" checked={todo.completed} style={{ width: '25px', height: '25px' }} onClick={() => handleCheck(todo)} /></div>
+                <div style={{ marginLeft: '10px' }}>{todo.title}</div>
+              </div>
               <div>
                 <button type="button" className="btn btn-outline-secondary mr-2" onClick={() => handleUpdate(todo)}>Update</button>
                 <button type="button" className="btn btn-outline-danger" onClick={() => handleDelete(todo._id)}>Delete</button>
@@ -44,20 +53,22 @@ const TodoList = props => {
         )).reverse()
       }
       {
-        errorMessage ?
-          <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <p>{errorMessage}</p>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleErrorModalClose}>Close</button>
-                </div>
+        errorMessage &&
+        <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-body">
+                <p>{errorMessage}</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleErrorModalClose}>Close</button>
               </div>
             </div>
           </div>
-          : null
+        </div>
+      }
+      {
+        loading && <Loading width="200" height="200" />
       }
     </div>
   );

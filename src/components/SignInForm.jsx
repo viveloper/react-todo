@@ -54,20 +54,19 @@ const SignInForm = props => {
         <button type="submit" className="btn btn-primary">Submit</button>
       </form>
       {
-        errorMessage ?
-          <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-body">
-                  <p>{errorMessage}</p>
-                </div>
-                <div className="modal-footer">
-                  <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleErrorModalClose}>Close</button>
-                </div>
+        errorMessage &&
+        <div className="modal" tabIndex="-1" role="dialog" style={{ display: 'block' }}>
+          <div className="modal-dialog" role="document">
+            <div className="modal-content">
+              <div className="modal-body">
+                <p>{errorMessage}</p>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={handleErrorModalClose}>Close</button>
               </div>
             </div>
           </div>
-          : null
+        </div>
       }
     </>
   );

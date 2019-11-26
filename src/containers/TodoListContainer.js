@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import TodoList from '../components/TodoList';
-import { getTodoList, setErrorMessage, deleteTodo, setTodoFormTitle, setTodoFormButtonName, setSelectedTodo } from '../actions';
+import { getTodoList, setErrorMessage, updateTodo, deleteTodo, setTodoFormTitle, setTodoFormButtonName, setSelectedTodo } from '../actions';
 
 const mapStateToProps = (state, props) => {
   return {
     todoList: state.todoList,
+    loading: state.loading,
     errorMessage: state.errorMessage
   }
 }
@@ -15,6 +16,9 @@ const mapDispatchToProps = (dispatch, props) => {
     getTodoList: () => {
       dispatch(getTodoList(token));
     },    
+    updateTodo: (id, todo) => {
+      dispatch(updateTodo(props.token, id, todo));
+    },
     deleteTodo: id => {
       dispatch(deleteTodo(token, id));
     },
